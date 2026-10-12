@@ -310,12 +310,36 @@ namespace RealFuels
             yPos += step;
 
             // ── Row 1 — Col 1: Mode toggle │ Col 2: Burn Time input ────────────────
-            string modeLabel = sliderModeIsPercentage ? "Mode: % → Time" : "Mode: Time → %";
+            // Cycle: Time → %, % → Time, Calc → % (only when a calculation source is installed).
+            // Calc mode is time mode with the burn time supplied by the source.
+            bool calcMode = EngineBurnTimeSources.CalcMode && !sliderModeIsPercentage;
+            string modeLabel = calcMode ? "Mode: Calc → %"
+                : sliderModeIsPercentage ? "Mode: % → Time" : "Mode: Time → %";
             if (GUI.Button(new Rect(col1X, yPos, colW, btnH), modeLabel, buttonStyle))
-                sliderModeIsPercentage = !sliderModeIsPercentage;
+            {
+                if (calcMode)
+                    calcMode = false;
+                else if (sliderModeIsPercentage)
+                {
+                    sliderModeIsPercentage = false;
+                    calcMode = EngineBurnTimeSources.AnyAvailable;
+                }
+                else
+                    sliderModeIsPercentage = true;
+                EngineBurnTimeSources.CalcMode = calcMode;
+            }
 
-            // Col 2: Burn Time or Survival % label + field (mode-dependent)
-            if (sliderModeIsPercentage)
+            // Col 2: source button, or Burn Time or Survival % label + field (mode-dependent)
+            if (calcMode)
+            {
+                string calcValue = EngineBurnTimeSources.TryGetBurnTime(_module.part, out float calcTime)
+                    ? ChartMath.FormatTime(calcTime)
+                    : "n/a";
+                if (GUI.Button(new Rect(col2X, yPos, colW, btnH),
+                        $"{EngineBurnTimeSources.CurrentSourceName}: {calcValue}", buttonStyle))
+                    EngineBurnTimeSources.CycleSource();
+            }
+            else if (sliderModeIsPercentage)
             {
                 string pctLabel  = "Survival %:";
                 float  pctLabelW = controlStyle.CalcSize(new GUIContent(pctLabel)).x + 4f;

@@ -396,6 +396,13 @@ namespace RealFuels
             }
             GUILayout.EndHorizontal();
 
+            // Calc mode: the simulated burn time follows the selected calculation source.
+            // Updated on Layout only, so both IMGUI passes of a frame see the same value.
+            if (EngineBurnTimeSources.CalcMode && !sliderModeIsPercentage
+                && Event.current.type == EventType.Layout
+                && EngineBurnTimeSources.TryGetBurnTime(_module.part, out float calcBurnTime))
+                sliderTime = calcBurnTime;
+
             GUILayout.Space(7);
             DrawConfigSelectors(_module.FilteredDisplayConfigs(false));
 

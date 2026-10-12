@@ -1292,6 +1292,15 @@ namespace RealFuels
 
         private bool lastShowRFGUI = false;
 
+        // The calculated burn time source is polled here rather than in OnGUI. Polling
+        // makes MechJeb or KER publish new results, which must not happen between the
+        // Layout and Repaint passes of their own windows.
+        public void Update()
+        {
+            if (currentlyOpenGUI == this && showRFGUI && HighLogic.LoadedSceneIsEditor && EngineBurnTimeSources.CalcMode)
+                EngineBurnTimeSources.Refresh(part);
+        }
+
         public void OnGUI()
         {
             if (isMaster && HighLogic.LoadedSceneIsEditor)
