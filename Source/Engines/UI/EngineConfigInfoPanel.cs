@@ -332,8 +332,9 @@ namespace RealFuels
             // Col 2: source button, or Burn Time or Survival % label + field (mode-dependent)
             if (calcMode)
             {
-                string calcValue = EngineBurnTimeSources.TryGetBurnTime(_module.part, out float calcTime)
-                    ? ChartMath.FormatTime(calcTime)
+                // "~" marks a stage-based estimate rather than a per-engine result.
+                string calcValue = EngineBurnTimeSources.TryGetBurnTime(_module.part, _module.pModule, out float calcTime, out bool calcIsEstimate)
+                    ? (calcIsEstimate ? "~" : "") + ChartMath.FormatTime(calcTime)
                     : "n/a";
                 if (GUI.Button(new Rect(col2X, yPos, colW, btnH),
                         $"{EngineBurnTimeSources.CurrentSourceName}: {calcValue}", buttonStyle))

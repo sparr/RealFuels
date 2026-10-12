@@ -1298,7 +1298,7 @@ namespace RealFuels
         public void Update()
         {
             if (currentlyOpenGUI == this && showRFGUI && HighLogic.LoadedSceneIsEditor && EngineBurnTimeSources.CalcMode)
-                EngineBurnTimeSources.Refresh(part);
+                EngineBurnTimeSources.Refresh(part, pModule);
         }
 
         public void OnGUI()

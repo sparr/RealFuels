@@ -35,6 +35,9 @@
     <PlatformTarget>x64</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="0Harmony">
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Assembly-CSharp">
       <Private>False</Private>
     </Reference>
@@ -101,6 +104,8 @@
     <Compile Include="Engines\EngineConfigTechLevels.cs" />
     <Compile Include="Engines\UI\EngineConfigStyles.cs" />
     <Compile Include="Engines\UI\EngineConfigTextures.cs" />
+    <Compile Include="Engines\UI\KerbalEngineerBurnTimes.cs" />
+    <Compile Include="Engines\UI\MechJebEngineBurnTimes.cs" />
     <Compile Include="Engines\ModuleHybridEngine.cs" />
     <Compile Include="Engines\RFSettings.cs" />
     <Compile Include="Engines\ModuleEnginesRF.cs" />

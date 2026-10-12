@@ -400,7 +400,7 @@ namespace RealFuels
             // Updated on Layout only, so both IMGUI passes of a frame see the same value.
             if (EngineBurnTimeSources.CalcMode && !sliderModeIsPercentage
                 && Event.current.type == EventType.Layout
-                && EngineBurnTimeSources.TryGetBurnTime(_module.part, out float calcBurnTime))
+                && EngineBurnTimeSources.TryGetBurnTime(_module.part, _module.pModule, out float calcBurnTime, out _))
                 sliderTime = calcBurnTime;
 
             GUILayout.Space(7);
